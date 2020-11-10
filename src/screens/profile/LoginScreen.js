@@ -17,9 +17,9 @@ const LoginScreen = ({ navigation }) => {
       </Text>
       <View>
         <Text style={styles.label}>E-mail</Text>
-        <TextInput style={styles.input}></TextInput>
+        <TextInput style={styles.mail}></TextInput>
         <Text style={styles.label}>Senha</Text>
-        <TextInput style={styles.input}></TextInput>
+        <TextInput style={styles.passwd}></TextInput>
         <TouchableOpacity
           onPress={() => navigation.navigate("PasswordRecovery")}
         >
@@ -49,9 +49,10 @@ const styles = StyleSheet.create({
     fontSize: 80,
     justifyContent: "center",
     alignSelf: "center",
-    marginVertical: 50,
+    marginTop: 16,
+    marginBottom: 24,
   },
-  input: {
+  mail: {
     borderColor: "green",
     paddingLeft: 12,
     borderWidth: 2,
@@ -59,8 +60,20 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     alignItems: "center",
     height: 60,
-    fontSize: 16, //tamanho do input?
+    fontSize: 16,
+    marginBottom: 24,
   },
+  passwd: {
+    borderColor: "green",
+    paddingLeft: 12,
+    borderWidth: 2,
+    borderRadius: 10,
+    marginHorizontal: 10,
+    alignItems: "center",
+    height: 60,
+    fontSize: 16
+  },
+  
   label: {
     fontWeight: "bold",
     fontSize: 18,
@@ -79,9 +92,10 @@ const styles = StyleSheet.create({
   button: {
     borderColor: "green",
     borderWidth: 2,
-    borderRadius: 10,
+    borderRadius: 45,
     height: 60,
-    width: 120,
+    paddingLeft:12,
+    paddingRight:12,
     alignItems: "center",
     justifyContent: "center",
   },
