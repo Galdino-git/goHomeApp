@@ -5,7 +5,9 @@ const RideScreen = ({ navigation }) => {
   //Comportamento esperado:
   //Track da viagem (passageiros + motorista) apenas
   //Enquanto não for iniciada pelo motorista, passageiros podem "desistir da Carona"
-  //Enquanto não for iniciada pelo motorista, motorista pode "remover da Carona" (?)
+  //Enquanto não for iniciada pelo motorista, motorista pode "remover da Carona" (necessário justificativa)
+  //Corridas canceladas ou 'removidos pelo motorista' podem ser avaliadas
+  //Antes de ser iniciada, o motorista pode cancelar a Carona (necessário justificativa)
   //Ao ser iniciada, a tela muda para acompanhar a Carona
   //Acompanha quando alguem "finaliza" a viagem dela, removendo da listagem
   //O motorista pode finalizar a viagem, "cancelando" a Carona de todos. É necessário justificativa e todos passageiros são notificados (?)
