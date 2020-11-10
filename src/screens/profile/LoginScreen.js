@@ -53,10 +53,13 @@ const styles = StyleSheet.create({
   },
   input: {
     borderColor: "green",
+    paddingLeft: 12,
     borderWidth: 2,
     borderRadius: 10,
     marginHorizontal: 10,
-    fontSize: 40, //tamanho do input?
+    alignItems: "center",
+    height: 60,
+    fontSize: 16, //tamanho do input?
   },
   label: {
     fontWeight: "bold",
