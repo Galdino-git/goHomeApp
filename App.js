@@ -1,36 +1,53 @@
-import { createAppContainer } from "react-navigation";
+import React from "react";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import LoginScreen from "./src/screens/profile/LoginScreen";
-import SignInScreen from "./src/screens/profile/SignInScreen";
-import MenuScreen from "./src/screens/menu/MenuScreen";
-import ProfileScreen from "./src/screens/profile/ProfileScreen";
-import HistoricScren from "./src/screens/profile/HistoricScreen";
-import SearchRideScreen from "./src/screens/ride/SearchRideScreen";
-import StartRideScreen from "./src/screens/ride/StartRideScreen";
-import ChatScreen from "./src/screens/ride/ChatScreen";
-import RideScreen from "./src/screens/ride/RideScreen";
-import PasswordRecoveryScreen from "./src/screens/profile/PasswordRecoveryScreen";
+import { createDrawerNavigator } from "react-navigation-drawer";
+import SignInScreen from "./src/screens/login/SignInScreen";
+import SignUpScreen from "./src/screens/login/SignUpScreen";
+import MenuScreen from "./src/screens/main/menu/MenuScreen";
+import ProfileScreen from "./src/screens/main/menu/ProfileScreen";
+import HistoricScreen from "./src/screens/main/menu/HistoricScreen";
+import SearchRideScreen from "./src/screens/main/ride/chat/SearchRideScreen";
+import StartRideScreen from "./src/screens/main/ride/chat/StartRideScreen";
+import ChatScreen from "./src/screens/main/ride/chat/ChatScreen";
+import RideScreen from "./src/screens/main/ride/RideScreen";
+import PasswordRecoveryScreen from "./src/screens/login/PasswordRecoveryScreen";
+import LoadingScreen from "./src/screens/LoadingScreen";
 
-const navigator = createStackNavigator(
-  {
-    Login: LoginScreen,
-    PasswordRecovery: PasswordRecoveryScreen,
+import { Provider as AuthProvider } from "./src/context/AuthContext";
+
+const navigator = createSwitchNavigator({
+  //Loading: LoadingScreen,
+  loginFlow: createStackNavigator({
     SignIn: SignInScreen,
-    Menu: MenuScreen,
-    Profile: ProfileScreen,
-    Historic: HistoricScren,
-    StartRide: StartRideScreen,
-    SearchRide: SearchRideScreen,
-    ChatScreen: ChatScreen,
-    Ride: RideScreen,
-  },
-  {
-    initialRouteName: "Login",
-    defaultNavigationOptions: {
-      title: "GoHome",
-      headerTitleAlign: "center",
-    },
-  }
-);
+    SignUp: SignUpScreen,
+    PasswordRecovery: PasswordRecoveryScreen,
+  }),
+  mainFlow: createStackNavigator({
+    menuFlow: createDrawerNavigator({
+      Menu: MenuScreen,
+      Historic: HistoricScreen,
+      Profile: ProfileScreen,
+    }),
+    rideFlow: createSwitchNavigator({
+      chatFlow: createStackNavigator({
+        SearchRide: SearchRideScreen,
+        Chat: ChatScreen,
+        StartRide: StartRideScreen,
+      }),
+      Ride: RideScreen,
+    }),
+  }),
+});
 
-export default createAppContainer(navigator);
+const App = createAppContainer(navigator);
+
+export default () => {
+  {
+    return (
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    );
+  }
+};
