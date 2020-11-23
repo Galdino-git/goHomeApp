@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-const SignInScreen = ({ navigation }) => {
+const SignUpScreen = ({ navigation }) => {
   //Comportamento esperado:
   //Tela de cadastro de usuário
   //Possivel radio button para escolha de cadastro entre motorista e passageiro
@@ -11,11 +11,11 @@ const SignInScreen = ({ navigation }) => {
 
   return (
     <View>
-      <Text>SignIn Screen</Text>
+      <Text>SignUp Screen</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({});
 
-export default SignInScreen;
+export default SignUpScreen;
