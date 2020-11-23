@@ -1,48 +1,42 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity,} from "react-native";
+
+import PasswordRecoveryScreen from './PasswordRecoveryScreen';
+import SignInScreen from './SignInScreen';
+import MenuScreen from '../menu/MenuScreen';
+
+
+
 import { Entypo } from "@expo/vector-icons";
 
-const LoginScreen = ({ navigation }) => {
-  return (
-    <View>
-      <Text style={styles.title}>
-        Go
-        <Entypo name="home" size={80} color="green" />
-      </Text>
+export default ({ history}) => (
+  <View>
+    <Text style={styles.title}>Go <Entypo name="home" size={80} color="green" /> </Text>
       <View>
         <Text style={styles.label}>E-mail</Text>
         <TextInput style={styles.mail}></TextInput>
         <Text style={styles.label}>Senha</Text>
         <TextInput style={styles.passwd}></TextInput>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("PasswordRecovery")}
-        >
+        <TouchableOpacity style={styles.PasswdRecovery} onPress={() => history.push("/passwdScreen")}>
           <Text style={styles.senha}>Esqueceu a senha?</Text>
         </TouchableOpacity>
+        <View style={styles.viewButton}>
+          <TouchableOpacity style={styles.button} onPress={() => history.push("/MenuScreen")}> 
+            <Text style={styles.buttonText}>Entrar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={() => history.push("/SignInScreen")}> 
+            <Text style={styles.buttonText}>Cadastrar</Text>
+          </TouchableOpacity>
+
+        </View>
       </View>
       <View style={styles.viewButton}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("Menu")}
-        >
-          <Text style={styles.buttonText}>Entrar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("SignIn")}
-        >
-          <Text style={styles.buttonText}>Cadastrar</Text>
-        </TouchableOpacity>
-      </View>
     </View>
-  );
-};
+  </View>
+
+);
+
 
 const styles = StyleSheet.create({
   title: {
@@ -106,4 +100,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
