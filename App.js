@@ -11,6 +11,7 @@ import SearchRideScreen from "./src/screens/main/ride/chat/SearchRideScreen";
 import StartRideScreen from "./src/screens/main/ride/chat/StartRideScreen";
 import ChatScreen from "./src/screens/main/ride/chat/ChatScreen";
 import RideScreen from "./src/screens/main/ride/RideScreen";
+import Evaluation from "./src/screens/main/ride/Evaluation";
 import PasswordRecoveryScreen from "./src/screens/login/PasswordRecoveryScreen";
 import LoadingScreen from "./src/screens/LoadingScreen";
 
@@ -36,6 +37,7 @@ const navigator = createSwitchNavigator({
         StartRide: StartRideScreen,
       }),
       Ride: RideScreen,
+      Evaluation: Evaluation,
     }),
   }),
 });
