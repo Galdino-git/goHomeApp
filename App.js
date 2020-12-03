@@ -14,7 +14,7 @@ import RideScreen from "./src/screens/main/ride/RideScreen";
 import PasswordRecoveryScreen from "./src/screens/login/PasswordRecoveryScreen";
 import LoadingScreen from "./src/screens/LoadingScreen";
 
-import { Provider as AuthProvider } from "./src/context/AuthContext";
+import { Provider as LoginProvider } from "./src/context/LoginContext";
 
 const navigator = createSwitchNavigator({
   //Loading: LoadingScreen,
@@ -45,9 +45,9 @@ const App = createAppContainer(navigator);
 export default () => {
   {
     return (
-      <AuthProvider>
+      <LoginProvider>
         <App />
-      </AuthProvider>
+      </LoginProvider>
     );
   }
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Input } from "react-native-elements";
 import { Entypo } from "@expo/vector-icons";
+import { Context as LoginContext } from "../../context/LoginContext";
 
 const SignInScreen = ({ navigation }) => {
   //correção para mudança de fonte quando secureTextEntry for true
@@ -20,6 +21,7 @@ const SignInScreen = ({ navigation }) => {
     });
   });
 
+  const { state, signin } = useContext(LoginContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -50,9 +52,7 @@ const SignInScreen = ({ navigation }) => {
           ref={inputElementRef}
           secureTextEntry
         ></Input>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("PasswordRecovery")}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate("mainFlow")}>
           <Text style={styles.senha}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>
