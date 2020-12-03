@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import Map from "../../../component/Map";
 
 const RideScreen = ({ navigation }) => {
   //Comportamento esperado:
@@ -15,12 +16,50 @@ const RideScreen = ({ navigation }) => {
   //Apos clicar, abrir parte da tela com a avaliação
   //Apos avaliar, retornar a tela de Menu
   return (
-    <View>
-      <Text>Ride Screen</Text>
+    <View style={styles.base}>
+      <View style={styles.map}>
+        <Map />
+      </View>
+      <View style={styles.btnLine}>
+        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Evaluation")}>
+          <Text style={styles.btnText}>Finalizar Corrida</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  base:{
+    flex: 1,
+    paddingTop: 14,
+    paddingLeft: 12,
+    paddingRight: 12,
+    backgroundColor: '#fff',
+  },
+  map:{
+    alignItems: 'center',
+  },
+  btnLine:{
+    alignItems: 'center',
+    paddingTop: 14,
+  },
+  btn:{
+    paddingTop: 12,
+    paddingBottom: 12,
+    borderWidth: 1,
+    borderColor: 'green',
+    alignItems: 'center',
+    width: 160,
+    borderRadius: 50
+  },
+  btnText:{
+    fontSize: 16,
+    fontWeight: '700'
+  }
+
+
+
+});
 
 export default RideScreen;
