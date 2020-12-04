@@ -52,7 +52,9 @@ const SignInScreen = ({ navigation }) => {
           ref={inputElementRef}
           secureTextEntry
         ></Input>
-        <TouchableOpacity onPress={() => navigation.navigate("mainFlow")}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("PasswordRecovery")}
+        >
           <Text style={styles.senha}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>

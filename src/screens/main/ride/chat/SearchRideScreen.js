@@ -1,10 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import {Input} from 'react-native-elements';
-import RNPickerSelect from 'react-native-picker-select';
-import Carona from '../../../../component/Carona';
-
-
+import { Input } from "react-native-elements";
+import RNPickerSelect from "react-native-picker-select";
+import Carona from "../../../../component/Carona";
 
 const SearchRideScreen = ({ navigation }) => {
   //Comportamento esperado:
@@ -19,12 +17,12 @@ const SearchRideScreen = ({ navigation }) => {
       <View style={styles.formLine}>
         <Text style={styles.label}>Local</Text>
         <RNPickerSelect
-            onValueChange={(value) => console.log(value)}
-            items={[
-              { label: 'Estácio Campus I', value: '1' },
-              { label: 'Estácio Campus II', value: '2' },
-              { label: 'Estácio Campus III', value: '3' },
-            ]}
+          onValueChange={(value) => console.log(value)}
+          items={[
+            { label: "Estácio Campus I", value: "1" },
+            { label: "Estácio Campus II", value: "2" },
+            { label: "Estácio Campus III", value: "3" },
+          ]}
         />
       </View>
       <View style={styles.formLine}>
@@ -36,51 +34,48 @@ const SearchRideScreen = ({ navigation }) => {
           <Text style={styles.textList}>Caronas disponíveis</Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
-          <Carona/>
+          <Carona />
         </TouchableOpacity>
-        
-
       </View>
-      
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  base:{
+  base: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     paddingTop: 24,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
-  formLine:{
+  formLine: {
     marginBottom: 24,
     padding: 12,
-    width: '80%',
+    width: "80%",
   },
-  label:{
+  label: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#3E475B',
+    fontWeight: "bold",
+    color: "#3E475B",
   },
-  list:{
-    width: '100%',
+  list: {
+    width: "100%",
   },
-  titleList:{
-    backgroundColor: 'green',
+  titleList: {
+    backgroundColor: "green",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     paddingLeft: 16,
     paddingTop: 12,
     paddingBottom: 12,
     borderTopRightRadius: 12,
     borderTopLeftRadius: 12,
   },
-  textList:{
+  textList: {
     fontSize: 24,
-    fontWeight: '700',
-    color: '#fff',
-  }
+    fontWeight: "700",
+    color: "#fff",
+  },
 });
 
 export default SearchRideScreen;

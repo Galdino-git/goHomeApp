@@ -1,5 +1,5 @@
 import createDataContext from "./createDataContext";
-import goHomeAPi from "../api/goHomeAPI";
+import goHomeApi from "../api/goHomeAPI";
 
 const LoginReducer = (state, action) => {
   switch (action.type) {
@@ -11,7 +11,7 @@ const LoginReducer = (state, action) => {
 const signup = (dispatch) => {
   return async ({ email, password }) => {
     try {
-      const response = await goHomeAPi.post("./signup", { email, password });
+      const response = await goHomeApi.post("./signup", { email, password });
       console.log(response.data);
     } catch (erro) {
       console.log(erro.message);
