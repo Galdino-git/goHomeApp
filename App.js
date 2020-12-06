@@ -13,23 +13,28 @@ import ChatScreen from "./src/screens/main/ride/chat/ChatScreen";
 import RideScreen from "./src/screens/main/ride/RideScreen";
 import Evaluation from "./src/screens/main/ride/Evaluation";
 import PasswordRecoveryScreen from "./src/screens/login/PasswordRecoveryScreen";
+import { setNavigator } from "./src/_navigationRef";
 import LoadingScreen from "./src/screens/LoadingScreen";
+import CustomDrawer from "./src/component/CustomDrawer";
 
 import { Provider as LoginProvider } from "./src/context/LoginContext";
 
-const navigator = createSwitchNavigator({
-  //Loading: LoadingScreen,
+const appNavigator = createSwitchNavigator({
+  Loading: LoadingScreen,
   loginFlow: createStackNavigator({
     SignIn: SignInScreen,
     SignUp: SignUpScreen,
     PasswordRecovery: PasswordRecoveryScreen,
   }),
   mainFlow: createStackNavigator({
-    menuFlow: createDrawerNavigator({
-      Menu: MenuScreen,
-      Historic: HistoricScreen,
-      Profile: ProfileScreen,
-    }),
+    menuFlow: createDrawerNavigator(
+      {
+        Menu: MenuScreen,
+        Historic: HistoricScreen,
+        Profile: ProfileScreen,
+      },
+      { contentComponent: CustomDrawer }
+    ),
     rideFlow: createSwitchNavigator({
       chatFlow: createStackNavigator({
         SearchRide: SearchRideScreen,
@@ -42,13 +47,17 @@ const navigator = createSwitchNavigator({
   }),
 });
 
-const App = createAppContainer(navigator);
+const App = createAppContainer(appNavigator);
 
 export default () => {
   {
     return (
       <LoginProvider>
-        <App />
+        <App
+          ref={(navigator) => {
+            setNavigator(navigator);
+          }}
+        ></App>
       </LoginProvider>
     );
   }

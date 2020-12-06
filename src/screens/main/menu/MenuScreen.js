@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 
-import Map from '../../../component/Map';
+import Map from "../../../component/Map";
 
 const MenuScreen = ({ navigation }) => {
   //Comportamento esperado:
@@ -9,45 +9,51 @@ const MenuScreen = ({ navigation }) => {
   //Side menu com foto, nome, avaliação botao para acessar Historico, botao para acessar Perfil e botão para deslogar
 
   return (
-     <View style={styles.base}>
-       <Map />
-       <View style={styles.btnLine}>
-         <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("SearchRide")}>
-           <Text style={styles.btnText}>Buscar carona</Text>
-         </TouchableOpacity>
-         <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("StartRide")}>
-           <Text style={styles.btnText}>Oferecer carona</Text>
-         </TouchableOpacity>
-       </View>
-     </View>
+    <View style={styles.base}>
+      <Map />
+      <View style={styles.btnLine}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("SearchRide")}
+        >
+          <Text style={styles.btnText}>Buscar carona</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("StartRide")}
+        >
+          <Text style={styles.btnText}>Oferecer carona</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  base:{
+  base: {
     flex: 1,
     paddingTop: 24,
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
-  btnLine:{
+  btnLine: {
     paddingTop: 48,
-    alignItems: 'center',
+    alignItems: "center",
   },
-  btn:{
+  btn: {
     width: 220,
     height: 60,
     borderWidth: 3,
     borderRadius: 50,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginBottom: 36,
-    borderColor: 'green'
+    borderColor: "green",
   },
-  btnText:{
-    textAlign: 'center',
+  btnText: {
+    textAlign: "center",
     fontSize: 16,
-    fontWeight: 'bold',
-  }
+    fontWeight: "bold",
+  },
 });
 
 export default MenuScreen;

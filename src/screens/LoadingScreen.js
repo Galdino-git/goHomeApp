@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { Context as LoginContext } from "../context/LoginContext";
 
 const LoadingScreen = () => {
-  //code
+  const { automaticLogin } = useContext(LoginContext);
+  useEffect(() => {
+    automaticLogin();
+  }, []);
+
   return null;
 };
 
