@@ -6,11 +6,8 @@ import { Feather } from '@expo/vector-icons';
 
 const Evaluation = ({navigation}) =>{
 
-let rating = 0;
+const [rating, setRating] = useState(null);
 
-    function setRating(value){
-      rating = value;
-    }
 
     return(
         <View style={styles.base}>
@@ -141,7 +138,7 @@ const styles = StyleSheet.create({
     fontWeight: '700'
   },
   rating:{
-    color: 'gold'
+    color: 'gold',  
   }
 });
 

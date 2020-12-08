@@ -3,16 +3,23 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 
 class Carona extends Component{
-    static defaultProps ={
-        list:{}
+    static defaultProps = {
+        name: '',
+        destino: '',
+        vagas: ''
     }
+
+    state = {
+    }
+
+
     render(){
-        const {props} = this,
-            {list}= props;
+        const {state, props} = this;
+
         return(
             <View style={styles.base}>
-                <Text>Nome motorista - destino</Text>
-                <Text>Vagas X</Text>
+                <Text>{props.name} - {props.destino}</Text>
+                <Text>Vagas {props.vagas}</Text>
             </View>
         );
     }
