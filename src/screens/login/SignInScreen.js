@@ -1,18 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Input } from "react-native-elements";
 import { Entypo } from "@expo/vector-icons";
+import { NavigationEvents } from "react-navigation";
+import { Context as LoginContext } from "../../context/LoginContext";
 
 const SignInScreen = ({ navigation }) => {
-  //correção para mudança de fonte quando secureTextEntry for true
   const inputElementRef = useRef(null);
-  //
 
   useEffect(() => {
     inputElementRef.current.setNativeProps({
@@ -20,11 +14,13 @@ const SignInScreen = ({ navigation }) => {
     });
   });
 
+  const { state, signin, clearErrorMessage } = useContext(LoginContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   return (
     <View style={styles.container}>
+      <NavigationEvents onWillFocus={clearErrorMessage} />
       <Text style={styles.title}>
         Go
         <Entypo name="home" size={80} color="green" />
@@ -56,18 +52,21 @@ const SignInScreen = ({ navigation }) => {
           <Text style={styles.senha}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.viewButton}>
+      {state.errorMessage ? (
+        <Text style={styles.errorMessage}>{state.errorMessage}</Text>
+      ) : null}
+      <View style={styles.btnLine}>
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("Menu")}
+          style={styles.btn}
+          onPress={() => signin({ email, password })}
         >
-          <Text style={styles.buttonText}>Entrar</Text>
+          <Text style={styles.btnText}>Entrar</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.button}
+          style={styles.btn}
           onPress={() => navigation.navigate("SignUp")}
         >
-          <Text style={styles.buttonText}>Cadastrar</Text>
+          <Text style={styles.btnText}>Cadastrar</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -118,30 +117,39 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     fontWeight: "bold",
   },
-  viewButton: {
-    marginTop: 60,
+  btnLine: {
+    marginTop: 20,
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "space-around",
   },
-  button: {
+  btn: {
+    paddingTop: 12,
+    paddingBottom: 12,
+    borderWidth: 1,
     borderColor: "green",
-    borderWidth: 2,
-    borderRadius: 45,
-    height: 60,
-    paddingLeft: 12,
-    paddingRight: 12,
     alignItems: "center",
-    justifyContent: "center",
+    width: 120,
+    borderRadius: 50,
   },
-  buttonText: {
-    fontSize: 20,
-    padding: 5,
-    fontWeight: "bold",
+  btnText: {
+    fontSize: 16,
+    fontWeight: "700",
   },
   container: {
     flex: 1,
     justifyContent: "center",
     marginBottom: 100,
+  },
+  errorMessage: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    marginVertical: 10,
+    color: "red",
+    alignSelf: "center",
+    justifyContent: "center",
+    paddingLeft: 12,
+    paddingRight: 12,
   },
 });
 

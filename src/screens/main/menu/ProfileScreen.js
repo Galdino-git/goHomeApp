@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { FontAwesome5 } from '@expo/vector-icons'; 
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Context as LoginContext } from "../../../context/LoginContext";
+import goHomeApi from "../../../api/goHomeAPI";
 
 const ProfileScreen = () => {
+  const { state } = useContext(LoginContext);
   //Comportamento esperado:
   //Informar os dados cadastrais e ter um botao para editar cada campo
   //Poder alterar a senha
@@ -23,34 +26,31 @@ const ProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  base:{
+  base: {
     flex: 1,
     padding: 12,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
-  profilePictureLine:{
+  profilePictureLine: {
     alignItems: "center",
     marginBottom: 12,
   },
-  dataComponent:{
-
-  },
-  dataTitle:{
+  dataComponent: {},
+  dataTitle: {
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: "700",
     marginBottom: 24,
   },
-  name:{
+  name: {
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: "500",
     marginBottom: 12,
   },
-  mail:{
+  mail: {
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: "500",
     marginBottom: 12,
-  }
-
+  },
 });
 
 export default ProfileScreen;

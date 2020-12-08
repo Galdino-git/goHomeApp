@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import {Input} from 'react-native-elements';
-import RNPickerSelect from 'react-native-picker-select';
-import OfercerCarona from '../../../../component/OferecerCarona';
-import Carona from '../../../../component/Carona';
+import { Input } from "react-native-elements";
+import RNPickerSelect from "react-native-picker-select";
+import OfercerCarona from "../../../../component/OferecerCarona";
+import Carona from "../../../../component/Carona";
 
 const StartRideScreen = ({ navigation }) => {
   //Comportamento esperado:
@@ -19,12 +19,12 @@ const StartRideScreen = ({ navigation }) => {
       <View style={styles.formLine}>
         <Text style={styles.label}>Local</Text>
         <RNPickerSelect
-            onValueChange={(value) => console.log(value)}
-            items={[
-                { label: 'Estácio Campus I', value: '1' },
-                { label: 'Estácio Campus II', value: '2' },
-                { label: 'Estácio Campus III', value: '3' },
-            ]}
+          onValueChange={(value) => console.log(value)}
+          items={[
+            { label: "Estácio Campus I", value: "1" },
+            { label: "Estácio Campus II", value: "2" },
+            { label: "Estácio Campus III", value: "3" },
+          ]}
         />
       </View>
       <View style={styles.formLine}>
@@ -32,7 +32,10 @@ const StartRideScreen = ({ navigation }) => {
         <Input />
       </View>
       <View style={styles.btnStartLine}>
-        <TouchableOpacity style={styles.btnStart} onPress={() => navigation.navigate("Ride")}>
+        <TouchableOpacity
+          style={styles.btnStart}
+          onPress={() => navigation.navigate("Ride")}
+        >
           <Text style={styles.btnStartText}>Começar corrida</Text>
         </TouchableOpacity>
       </View>
@@ -50,76 +53,73 @@ const StartRideScreen = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
           <OfercerCarona />
         </TouchableOpacity>
-        
-
       </View>
-      
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  base:{
+  base: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     paddingTop: 24,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
-  formLine:{
+  formLine: {
     marginBottom: 24,
     padding: 12,
-    width: '80%',
+    width: "80%",
   },
-  label:{
+  label: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#3E475B',
+    fontWeight: "bold",
+    color: "#3E475B",
   },
-  btnStartLine:{
+  btnStartLine: {
     paddingTop: 16,
     paddingBottom: 16,
-    alignItems: 'center'
+    alignItems: "center",
   },
-  btnStart:{
+  btnStart: {
     paddingTop: 12,
     paddingBottom: 12,
     borderWidth: 1,
-    borderColor: 'green',
-    alignItems: 'center',
+    borderColor: "green",
+    alignItems: "center",
     width: 160,
     borderRadius: 50,
   },
-  btnStartText:{
+  btnStartText: {
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: "700",
   },
-  list:{
-    width: '100%',
+  list: {
+    width: "100%",
   },
-  titleList:{
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'green',
+  titleList: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "green",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     paddingLeft: 16,
     paddingTop: 12,
     paddingBottom: 12,
     borderTopRightRadius: 12,
     borderTopLeftRadius: 12,
   },
-  textList:{
+  textList: {
     fontSize: 24,
-    fontWeight: '700',
-    color: '#fff',
+    fontWeight: "700",
+    color: "#fff",
   },
-  vagaCount:{
+  vagaCount: {
     fontSize: 16,
-    fontWeight: '500',
-    color: '#fff',
+    fontWeight: "500",
+    color: "#fff",
     marginLeft: 24,
-  }
+  },
 });
 
 export default StartRideScreen;

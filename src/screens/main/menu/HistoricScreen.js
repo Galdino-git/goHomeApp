@@ -27,64 +27,62 @@ const HistoricScreen = () => {
           <Text style={styles.Type}>passageiro</Text>
           <Text style={styles.date}>DD/MM</Text>
         </TouchableOpacity>
-        
-
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  base:{
+  base: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     paddingTop: 24,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
-  list:{
-    backgroundColor: '#fff',
+  list: {
+    backgroundColor: "#fff",
     marginTop: 48,
-    width: '100%',
+    width: "100%",
   },
-  titleList:{
-    backgroundColor: 'green',
+  titleList: {
+    backgroundColor: "green",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     paddingLeft: 16,
     paddingTop: 12,
     paddingBottom: 12,
     borderTopRightRadius: 12,
     borderTopLeftRadius: 12,
   },
-  textList:{
+  textList: {
     fontSize: 24,
-    fontWeight: '700',
-    color: '#fff',
+    fontWeight: "700",
+    color: "#fff",
   },
-  itemLine:{
+  itemLine: {
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: '#333',
+    borderColor: "#333",
     paddingTop: 24,
     paddingBottom: 24,
     paddingLeft: 12,
     paddingRight: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
-  name:{
+  name: {
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: "700",
   },
-  Type:{
+  Type: {
     fontSize: 14,
-    fontWeight: '500'
+    fontWeight: "500",
   },
-  date:{
+  date: {
     fontSize: 14,
-    fontWeight: '500'
-  }
+    fontWeight: "500",
+  },
 });
 
 export default HistoricScreen;

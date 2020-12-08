@@ -1,6 +1,0 @@
---ICONS
-https://icons.expo.fyi/
-
---RADIOBUTTON (ja instalado, talvez necessario uma segunda olhada)
-https://www.npmjs.com/package/react-native-radio-buttons
-react-native-radio-buttons
