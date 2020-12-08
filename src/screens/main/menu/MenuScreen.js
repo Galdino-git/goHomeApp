@@ -3,7 +3,6 @@ import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 import Map from "../../../component/Map";
 
-
 const MenuScreen = ({ navigation }) => {
   //Comportamento esperado:
   //Tela "principal" para Iniciar uma Corrida(se Motorista) e/ou Buscar uma Corrida(motorista/passageiro)
@@ -12,7 +11,6 @@ const MenuScreen = ({ navigation }) => {
   const isMotorista = true;
 
   return (
-<<<<<<< HEAD
     <View style={styles.base}>
       <Map />
       <View style={styles.btnLine}>
@@ -30,25 +28,6 @@ const MenuScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
     </View>
-=======
-     <View style={styles.base}>
-       <Map />
-       <View style={styles.btnLine}>
-          
-          <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("SearchRide")}>
-            <Text style={styles.btnText}>Buscar carona</Text>
-          </TouchableOpacity>
-        
-          {isMotorista ? 
-            <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("StartRide")}>
-              <Text style={styles.btnText}>Oferecer carona</Text>
-            </TouchableOpacity> 
-            :
-            null
-          }
-       </View>
-     </View>
->>>>>>> master
   );
 };
 
