@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { Context as LoginContext } from "../../../context/LoginContext";
@@ -8,6 +8,20 @@ const MenuScreen = ({ navigation }) => {
   //Side com nome foto avaliação
 
   const profile = state.profile;
+
+  // useEffect(() => {
+  //   async function dataRefresh() {
+  //     const token = state.token;
+  //     refreshData({ token });
+  //   }
+  //   if (!state.user) {
+  //     dataRefresh();
+  //     // console.log(state.token);
+  //     // console.log(state.user);
+  //     // console.log(state.profile);
+  //     // console.log(state.car);
+  //   }
+  // }, []);
 
   return (
     <View style={styles.base}>

@@ -19,6 +19,14 @@ const LoginReducer = (state, action) => {
       return { token: null, errorMessage: "" };
     case "clear_error_message":
       return { ...state, errorMessage: "" };
+    case "refresh_data":
+      return {
+        token: action.payload,
+        errorMessage: "",
+        profile: action.profile,
+        user: action.user,
+        car: action.car,
+      };
     default:
       return state;
   }
@@ -568,6 +576,43 @@ const updateData = (dispatch) => async ({
   }
 };
 
+const refreshData = (dispatch) => async ({ token }) => {
+  const _id = token;
+  try {
+    // const user = await goHomeApi
+    //   .get("/user/get", { _id: _id })
+    //   .catch((error) => console.log(error.message));
+
+    // console.log(user);
+
+    console.log(_id);
+    const profile = await goHomeApi.get("/profile/getByUserId", { _id });
+    console.log(profile);
+
+    if (profile.is_Driver) {
+      const car = await goHomeApi
+        .get("/car/readByProfileId", { _id_Profile: user._id_Profile })
+        .catch((error) => console.log(error.message));
+    }
+
+    console.log(car);
+
+    dispatch({
+      type: "refresh_data",
+      payload: _id,
+      profile: profile,
+      user: user,
+      car: car,
+    });
+  } catch (error) {
+    dispatch({
+      type: "error",
+      payload: "Algo deu errado ao buscar as informações do usuário logado.",
+    });
+    console.log(error.message);
+  }
+};
+
 export const { Provider, Context } = createDataContext(
   LoginReducer,
   {
@@ -579,6 +624,7 @@ export const { Provider, Context } = createDataContext(
     passwordRecovery,
     getProfileByUserId,
     updateData,
+    refreshData,
   },
   { token: null, errorMessage: "", profile: null, user: null, car: null }
 );

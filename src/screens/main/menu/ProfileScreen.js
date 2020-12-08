@@ -390,7 +390,7 @@ const ProfileScreen = ({ navigation }) => {
           <TouchableOpacity style={styles.btn}>
             <Text
               style={styles.btnText}
-              onPress={() => navigation.navigate("SignIn")}
+              onPress={() => navigation.navigate("Menu")}
             >
               Cancelar
             </Text>
