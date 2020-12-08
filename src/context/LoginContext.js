@@ -6,13 +6,11 @@ import { navigate } from "../_navigationRef";
 const LoginReducer = (state, action) => {
   switch (action.type) {
     case ("signup", "signin"):
-      return { ...state, token: action.payload, photoUri: action.photo };
+      return { ...state, token: action.payload };
     case "error":
       return { ...state, errorMessage: action.payload };
     case "signout":
-      return { token: null, errorMessage: "", photoUri: null };
-    case "getPhoto":
-      return { ...state, photoUri: action.payload };
+      return { token: null, errorMessage: "" };
     case "clear_error_message":
       return { ...state, errorMessage: "" };
     default:
@@ -173,17 +171,9 @@ const signup = (dispatch) => async ({
 
   //#endregion
 
-  const formData = new FormData();
-  formData.append("profileImg", photo);
-  axios
-    .post("http://localhost:4000/api/user-profile", formData, {})
-    .then((res) => {
-      console.log(res);
-    });
-
   try {
     const responseProfile = await goHomeApi
-      .post("/profile/create", formData, {
+      .post("/profile/create", {
         name,
         birthdate,
         cpf,
@@ -225,7 +215,6 @@ const signup = (dispatch) => async ({
     dispatch({
       type: "signup",
       payload: responseUser.token,
-      photo: responseProfile.profile.photo,
     });
     navigate("mainFlow");
   } catch (erro) {
@@ -258,7 +247,6 @@ const signin = (dispatch) => async ({ email, password }) => {
     dispatch({
       type: "signin",
       payload: response.token,
-      photo: response.photoUri,
     });
     navigate("mainFlow");
   } catch (erro) {
@@ -336,35 +324,6 @@ const passwordRecovery = (dispatch) => async ({
   }
 };
 
-const returnPhoto = (dispatch) => async () => {
-  const _id = AsyncStorage.getItem("token");
-
-  try {
-    const profile = await goHomeApi
-      .get("/profile/getByUserId", { _id })
-      .then((response) => response.data)
-      .catch((error) => console.log(error.message));
-
-    if (!profile) {
-      dispatch({
-        type: "error",
-        payload: "Algo deu errado durante a tentativa de buscar a foto.",
-      });
-      return;
-    }
-
-    dispatch({
-      type: "getPhoto",
-      payload: profile.photo,
-    });
-  } catch (error) {
-    dispatch({
-      type: "error",
-      payload: "Algo deu errado durante a tentativa de buscar a foto.",
-    });
-  }
-};
-
 export const { Provider, Context } = createDataContext(
   LoginReducer,
   {
@@ -374,7 +333,6 @@ export const { Provider, Context } = createDataContext(
     automaticLogin,
     clearErrorMessage,
     passwordRecovery,
-    returnPhoto,
   },
-  { token: null, errorMessage: "", photoUri: null }
+  { token: null, errorMessage: "" }
 );

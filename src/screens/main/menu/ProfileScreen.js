@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Context as LoginContext } from "../../../context/LoginContext";
-import goHomeApi from "../../../api/goHomeAPI";
 
 const ProfileScreen = () => {
   const { state } = useContext(LoginContext);
