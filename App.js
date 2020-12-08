@@ -1,6 +1,6 @@
 import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
+import { createStackNavigator, } from "react-navigation-stack";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import SignInScreen from "./src/screens/login/SignInScreen";
 import SignUpScreen from "./src/screens/login/SignUpScreen";

@@ -1,19 +1,77 @@
-import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons'; 
 
 const Evaluation = ({navigation}) =>{
+
+let rating = 0;
+
+    function setRating(value){
+      rating = value;
+    }
+
     return(
         <View style={styles.base}>
             <Text style={styles.title}>Avalie sua Carona</Text>
             <View style={styles.starLines}>
-                <FontAwesome name="star" size={48} color="black" />
-                <FontAwesome name="star" size={48} color="black" />
-                <FontAwesome name="star" size={48} color="black" />
-                <Feather name="star" size={48} color="black" />
-                <Feather name="star" size={48} color="black" />
+                {rating >= 1 ? 
+                  (
+                    <TouchableWithoutFeedback onPress={() => setRating(1)}>
+                      <FontAwesome name="star" size={48} style={styles.rating}/>
+                    </TouchableWithoutFeedback>
+                  ):(
+                    <TouchableWithoutFeedback onPress={() => setRating(1)}>
+                      <Feather name="star" size={48} style={styles.rating} />
+                    </TouchableWithoutFeedback>
+                  )
+                }
+                {rating >= 2 ? 
+                  (
+                    <TouchableWithoutFeedback onPress={() => setRating(2)}>
+                      <FontAwesome name="star" size={48} style={styles.rating}/>
+                    </TouchableWithoutFeedback>
+                  ):(
+                    <TouchableWithoutFeedback onPress={() => setRating(2)}>
+                      <Feather name="star" size={48} style={styles.rating} />
+                    </TouchableWithoutFeedback>
+                  )
+                }
+                {rating >= 3 ? 
+                  (
+                    <TouchableWithoutFeedback onPress={() => setRating(3)}>
+                      <FontAwesome name="star" size={48} style={styles.rating}/>
+                    </TouchableWithoutFeedback>
+                  ):(
+                    <TouchableWithoutFeedback onPress={() => setRating(3)}>
+                      <Feather name="star" size={48} style={styles.rating} />
+                    </TouchableWithoutFeedback>
+                  )
+                }
+                {rating >= 4 ? 
+                  (
+                    <TouchableWithoutFeedback onPress={() => setRating(4)}>
+                      <FontAwesome name="star" size={48} style={styles.rating}/>
+                    </TouchableWithoutFeedback>
+                  ):(
+                    <TouchableWithoutFeedback onPress={() => setRating(4)}>
+                      <Feather name="star" size={48} style={styles.rating} />
+                    </TouchableWithoutFeedback>
+                  )
+                }
+                {rating >= 5 ? 
+                  (
+                    <TouchableWithoutFeedback onPress={() => setRating(5)}>
+                      <FontAwesome name="star" size={48} style={styles.rating}/>
+                    </TouchableWithoutFeedback>
+                  ):(
+                    <TouchableWithoutFeedback onPress={() => setRating(5)}>
+                      <Feather name="star" size={48} style={styles.rating} />
+                    </TouchableWithoutFeedback>
+                  )
+                }
+                
             </View>
             <View style={styles.btnLine}>
                 <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Menu")}>
@@ -44,12 +102,13 @@ const styles = StyleSheet.create({
         paddingRight: 24,
         justifyContent: 'space-between',
         alignItems: 'center',
-    }, btnStartLine:{
+    },
+    btnStartLine:{
     paddingTop: 16,
     paddingBottom: 16,
     alignItems: 'center'
-  },
-  btnStart:{
+    },
+    btnStart:{
     paddingTop: 12,
     paddingBottom: 12,
     borderWidth: 1,
@@ -81,6 +140,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700'
   },
+  rating:{
+    color: 'gold'
+  }
 });
 
 export default Evaluation;
