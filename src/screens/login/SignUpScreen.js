@@ -1,15 +1,25 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  Image,
+} from "react-native";
 import { CheckBox, Input } from "react-native-elements";
 import RNPickerSelect from "react-native-picker-select";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Context as LoginContext } from "../../context/LoginContext";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import goHomeApi from "../../api/goHomeAPI";
+import { NavigationEvents } from "react-navigation";
+import * as ImagePicker from "expo-image-picker";
 
 const SignUpScreen = ({ navigation }) => {
-  const { state, signup, secretQuestions } = useContext(LoginContext);
+  const { state, signup, clearErrorMessage } = useContext(LoginContext);
   const [showBirthdate, setShowBirthdate] = useState(false);
   const [questions, setQuestions] = useState([]);
 
@@ -22,16 +32,54 @@ const SignUpScreen = ({ navigation }) => {
   });
 
   useEffect(() => {
-    secretQuestions();
-    var questions = state.questions.data;
-    setQuestions(questions);
+    async function getQuestions() {
+      await goHomeApi.get("/secretquestion/read").then((response) => {
+        var obj = response.data;
+        var questionList = [];
+        obj.forEach((element) => {
+          questionList.push({
+            label: element.question,
+            value: element._id,
+            key: element._id,
+          });
+        });
+        setQuestions(questionList);
+      });
+    }
+    getQuestions();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const {
+          status,
+        } = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (status !== "granted") {
+          alert("É necessário permissão para acessar o rolo de fotos!");
+        }
+      }
+    })();
+  }, []);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setPhoto(result.uri);
+    }
+  };
 
   //#region Profile
   const [name, setName] = useState("");
   const [birthdate, setBirthdate] = useState(new Date());
   const [cpf, setCpf] = useState(0);
-  const [photo, setPhoto] = useState(null);
+  const [photo, setPhoto] = useState("");
   const [telephone, setTelephone] = useState(0);
   const [is_Driver, setIs_Driver] = useState(false);
   const [cnh, setCnh] = useState(0);
@@ -42,27 +90,17 @@ const SignUpScreen = ({ navigation }) => {
   const [renavam, setRenavam] = useState("");
   const [model, setModel] = useState("");
   const [color, setColor] = useState("");
-  const [licensePlate, setLicensePlate] = useState("");
+  const [license_plate, setLicense_plate] = useState("");
   //#endregion
 
   //#region User (id_perfil necessário)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [newPassword, setNewPasswword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [questionId, setQuestionId] = useState(0);
-  const [secretAnswer, setSecretAnswer] = useState("");
+  const [_id_Secret_Question, set_Id_Secret_Question] = useState(0);
+  const [secret_Answer, setSecret_Answer] = useState("");
 
   //#endregion
-
-  const passwordValidate = (password, confirmPassword) => {
-    setConfirmPassword(confirmPassword);
-    if (password != confirmPassword) {
-      alert("Senhas não batem");
-    } else {
-      setPassword(password);
-    }
-  };
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || birthdate;
@@ -88,9 +126,44 @@ const SignUpScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.base}>
       <ScrollView showsVerticalScrollIndicator={false}>
+        <NavigationEvents onWillFocus={clearErrorMessage} />
         <Text style={styles.title}>Cadastro</Text>
         <View style={styles.profilePictureLine}>
-          <FontAwesome5 name="user-circle" size={200} color="black" />
+          <TouchableOpacity
+            onPress={pickImage}
+            style={{ alignItems: "center" }}
+          >
+            {photo ? null : (
+              <>
+                <FontAwesome5
+                  name="user-circle"
+                  size={200}
+                  color="black"
+                  style={{ marginBottom: 10 }}
+                />
+                <Text style={styles.label}>
+                  Clique na imagem para escolher a foto
+                </Text>
+              </>
+            )}
+            {photo && (
+              <>
+                <Image
+                  source={{ uri: photo }}
+                  style={{
+                    width: 200,
+                    height: 200,
+                    alignItems: "center",
+                    borderRadius: 100,
+                    marginBottom: 10,
+                  }}
+                />
+                <Text style={styles.label}>
+                  Clique na imagem para alterar a foto
+                </Text>
+              </>
+            )}
+          </TouchableOpacity>
         </View>
         <View style={styles.radioButtonLine}>
           <CheckBox
@@ -115,7 +188,7 @@ const SignUpScreen = ({ navigation }) => {
             autoCorrect={false}
             autoCompleteType="off"
             value={name}
-            onTextInput={setName}
+            onChangeText={setName}
           />
           <View style={{ flexDirection: "row" }}>
             <View style={{ flex: 1 }}>
@@ -127,7 +200,7 @@ const SignUpScreen = ({ navigation }) => {
                 keyboardType="numeric"
                 maxLength={11}
                 value={cpf == 0 ? "" : cpf.toString()}
-                onTextInput={setCpf}
+                onChangeText={setCpf}
               />
             </View>
             <View style={{ flex: 1 }}>
@@ -164,7 +237,7 @@ const SignUpScreen = ({ navigation }) => {
             keyboardType="phone-pad"
             maxLength={11}
             value={telephone == 0 ? "" : telephone.toString()}
-            onTextInput={setTelephone}
+            onChangeText={setTelephone}
           />
           {!is_Driver ? null : (
             <View>
@@ -177,7 +250,7 @@ const SignUpScreen = ({ navigation }) => {
                     autoCompleteType="off"
                     keyboardType="numeric"
                     value={cnh == 0 ? "" : cnh.toString()}
-                    onTextInput={setCnh}
+                    onChangeText={setCnh}
                   />
                 </View>
                 <View style={{ flex: 1 }}>
@@ -189,7 +262,7 @@ const SignUpScreen = ({ navigation }) => {
                     keyboardType="numeric"
                     maxLength={11}
                     value={renavam == 0 ? "" : renavam.toString()}
-                    onTextInput={setRenavam}
+                    onChangeText={setRenavam}
                   />
                 </View>
               </View>
@@ -202,7 +275,7 @@ const SignUpScreen = ({ navigation }) => {
                     autoCorrect={false}
                     autoCompleteType="off"
                     value={model}
-                    onTextInput={setModel}
+                    onChangeText={setModel}
                   />
                 </View>
                 <View style={{ flex: 1 }}>
@@ -212,7 +285,7 @@ const SignUpScreen = ({ navigation }) => {
                     autoCorrect={false}
                     autoCompleteType="off"
                     value={color}
-                    onTextInput={setColor}
+                    onChangeText={setColor}
                   />
                 </View>
               </View>
@@ -223,8 +296,8 @@ const SignUpScreen = ({ navigation }) => {
                 autoCorrect={false}
                 autoCompleteType="off"
                 maxLength={7}
-                value={licensePlate}
-                onTextInput={setLicensePlate}
+                value={license_plate}
+                onChangeText={setLicense_plate}
               />
             </View>
           )}
@@ -235,7 +308,7 @@ const SignUpScreen = ({ navigation }) => {
             autoCompleteType="off"
             keyboardType="email-address"
             value={email}
-            onTextInput={setEmail}
+            onChangeText={setEmail}
           />
           <View style={{ flexDirection: "row" }}>
             <View style={{ flex: 1 }}>
@@ -246,8 +319,8 @@ const SignUpScreen = ({ navigation }) => {
                 autoCorrect={false}
                 autoCompleteType="off"
                 ref={inputElementRef}
-                value={newPassword}
-                onTextInput={setNewPasswword}
+                value={password}
+                onChangeText={setPassword}
               />
             </View>
             <View style={{ flex: 1 }}>
@@ -259,7 +332,7 @@ const SignUpScreen = ({ navigation }) => {
                 autoCompleteType="off"
                 ref={inputElementRef}
                 value={confirmPassword}
-                onTextInput={(text) => passwordValidate(newPassword, text)}
+                onChangeText={setConfirmPassword}
               />
             </View>
           </View>
@@ -267,25 +340,27 @@ const SignUpScreen = ({ navigation }) => {
           <Text style={styles.label}>Pergunta para recuperação de senha </Text>
           <View style={styles.dropdown}>
             <RNPickerSelect
-              onValueChange={(value) => console.log(value)}
+              itemKey={_id_Secret_Question}
+              useNativeAndroidPickerStyle={true}
+              style={{ inputAndroid: { color: "black" } }}
+              onValueChange={(value, index) => set_Id_Secret_Question(value)}
               placeholder={{ label: "Selecione uma pergunta", value: "" }}
-              items={[
-                { label: "Football", value: "football" },
-                { label: "Baseball", value: "baseball" },
-                { label: "Hockey", value: "hockey" },
-              ]}
+              items={questions}
             />
           </View>
           <Input
             label="Resposta Secreta"
-            value={secretAnswer}
-            onTextInput={setSecretAnswer}
+            value={secret_Answer}
+            onChangeText={setSecret_Answer}
           />
         </View>
+        {state.errorMessage ? (
+          <Text style={styles.errorMessage}>{state.errorMessage}</Text>
+        ) : null}
         <View style={styles.btnLine}>
           <TouchableOpacity
             style={styles.btn}
-            onPress={() =>
+            onPress={() => {
               signup({
                 name,
                 birthdate,
@@ -297,13 +372,14 @@ const SignUpScreen = ({ navigation }) => {
                 renavam,
                 model,
                 color,
-                licensePlate,
+                license_plate,
                 email,
                 password,
-                questionId,
-                secretAnswer,
-              })
-            }
+                confirmPassword,
+                _id_Secret_Question,
+                secret_Answer,
+              });
+            }}
           >
             <Text style={styles.btnText}>Cadastrar</Text>
           </TouchableOpacity>
@@ -328,6 +404,16 @@ SignUpScreen.navigationOptions = () => {
 };
 
 const styles = StyleSheet.create({
+  errorMessage: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    color: "red",
+    alignSelf: "center",
+    justifyContent: "center",
+    paddingLeft: 12,
+    paddingRight: 12,
+  },
   base: {
     flex: 1,
     backgroundColor: "#fff",
@@ -346,12 +432,16 @@ const styles = StyleSheet.create({
     marginBottom: 36,
   },
   radioButtonLine: {
+    marginBottom: 10,
     flexDirection: "row",
     justifyContent: "center",
   },
   profilePictureLine: {
-    marginTop: 48,
+    marginVertical: 48,
     alignItems: "center",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   btnLine: {
     paddingTop: 24,

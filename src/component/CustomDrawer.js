@@ -1,33 +1,64 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Image,
   ScrollView,
   SafeAreaView,
   View,
   TouchableOpacity,
-  Text,
 } from "react-native";
 import { DrawerItems } from "react-navigation-drawer";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Context as LoginContext } from "../context/LoginContext";
+import { FontAwesome5 } from "@expo/vector-icons";
+import goHomeApi from "../api/goHomeAPI";
 
 const CustomDrawer = (props) => {
-  const { signout } = useContext(LoginContext);
+  const { state, signout } = useContext(LoginContext);
+  const [photo, setPhoto] = useState(null);
+
+  useEffect(() => {
+    setPhoto(state.photoUri);
+    console.log(state.photoUri);
+  }, []);
+
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
         <View
           style={{
-            height: 150,
+            height: 200,
             backgroundColor: "white",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Image
-            source={require("../../assets/icon.png")}
-            style={{ height: 120, width: 120, borderRadius: 60 }}
-          />
+          {photo ? null : (
+            <>
+              <FontAwesome5
+                name="user-circle"
+                size={150}
+                color="black"
+                style={{ marginBottom: 10 }}
+              />
+            </>
+          )}
+          {photo && (
+            <>
+              <Image
+                source={{
+                  uri:
+                    "data/user/0/host.exp.exponent/cache/ExperienceData/%2540vinicius_galdino%252FgoHomeApp/ImagePicker/5fa04cc7-6360-4871-9f89-ebfd5f8e634c.jpg",
+                }}
+                style={{
+                  width: 150,
+                  height: 150,
+                  alignItems: "center",
+                  borderRadius: 100,
+                  marginBottom: 10,
+                }}
+              />
+            </>
+          )}
         </View>
         <ScrollView>
           <DrawerItems {...props} />

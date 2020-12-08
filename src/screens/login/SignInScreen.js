@@ -1,19 +1,12 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Input } from "react-native-elements";
 import { Entypo } from "@expo/vector-icons";
+import { NavigationEvents } from "react-navigation";
 import { Context as LoginContext } from "../../context/LoginContext";
 
 const SignInScreen = ({ navigation }) => {
-  //correção para mudança de fonte quando secureTextEntry for true
   const inputElementRef = useRef(null);
-  //
 
   useEffect(() => {
     inputElementRef.current.setNativeProps({
@@ -21,12 +14,13 @@ const SignInScreen = ({ navigation }) => {
     });
   });
 
-  const { state, signin } = useContext(LoginContext);
+  const { state, signin, clearErrorMessage } = useContext(LoginContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   return (
     <View style={styles.container}>
+      <NavigationEvents onWillFocus={clearErrorMessage} />
       <Text style={styles.title}>
         Go
         <Entypo name="home" size={80} color="green" />
@@ -58,10 +52,13 @@ const SignInScreen = ({ navigation }) => {
           <Text style={styles.senha}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>
+      {state.errorMessage ? (
+        <Text style={styles.errorMessage}>{state.errorMessage}</Text>
+      ) : null}
       <View style={styles.btnLine}>
         <TouchableOpacity
           style={styles.btn}
-          onPress={() => navigation.navigate("Menu")}
+          onPress={() => signin({ email, password })}
         >
           <Text style={styles.btnText}>Entrar</Text>
         </TouchableOpacity>
@@ -121,7 +118,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   btnLine: {
-    marginTop: 50,
+    marginTop: 20,
     flexDirection: "row",
     justifyContent: "space-around",
   },
@@ -142,6 +139,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     marginBottom: 100,
+  },
+  errorMessage: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    marginVertical: 10,
+    color: "red",
+    alignSelf: "center",
+    justifyContent: "center",
+    paddingLeft: 12,
+    paddingRight: 12,
   },
 });
 
