@@ -19,6 +19,7 @@ import LoadingScreen from "./src/screens/LoadingScreen";
 import CustomDrawer from "./src/component/CustomDrawer";
 
 import { Provider as LoginProvider } from "./src/context/LoginContext";
+import { Provider as RouteProvider } from "./src/context/RouteContext";
 
 const appNavigator = createSwitchNavigator({
   Loading: LoadingScreen,
@@ -59,11 +60,13 @@ export default () => {
   {
     return (
       <LoginProvider>
-        <App
-          ref={(navigator) => {
-            setNavigator(navigator);
-          }}
-        ></App>
+        <RouteProvider>
+          <App
+            ref={(navigator) => {
+              setNavigator(navigator);
+            }}
+          ></App>
+        </RouteProvider>
       </LoginProvider>
     );
   }
