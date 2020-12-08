@@ -25,6 +25,7 @@ const SignUpScreen = ({ navigation }) => {
 
   const inputElementRef = useRef(null);
 
+  //#region UseEffect Functions
   useEffect(() => {
     inputElementRef.current.setNativeProps({
       style: { fontFamily: "" },
@@ -62,6 +63,8 @@ const SignUpScreen = ({ navigation }) => {
     })();
   }, []);
 
+  //#endregion
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -79,7 +82,7 @@ const SignUpScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [birthdate, setBirthdate] = useState(new Date());
   const [cpf, setCpf] = useState(0);
-  const [photo, setPhoto] = useState("");
+  const [photo, setPhoto] = useState(null);
   const [telephone, setTelephone] = useState(0);
   const [is_Driver, setIs_Driver] = useState(false);
   const [cnh, setCnh] = useState(0);
