@@ -324,6 +324,25 @@ const passwordRecovery = (dispatch) => async ({
   }
 };
 
+const getProfileByUserId = (dispatch) => async ({ token }) => {
+  try {
+    const _id = token;
+    const profile = await goHomeApi
+      .get("/profile/getByUserId", { _id: _id })
+      .catch((error) => console.log(error.message));
+
+    console.log(profile);
+
+    return profile;
+  } catch (error) {
+    dispatch({
+      type: "error",
+      payload:
+        "Algo deu errado durante a tentativa de buscar o perfil do usuário.",
+    });
+  }
+};
+
 export const { Provider, Context } = createDataContext(
   LoginReducer,
   {
@@ -333,6 +352,7 @@ export const { Provider, Context } = createDataContext(
     automaticLogin,
     clearErrorMessage,
     passwordRecovery,
+    getProfileByUserId,
   },
   { token: null, errorMessage: "" }
 );

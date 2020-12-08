@@ -184,7 +184,6 @@ const SignUpScreen = ({ navigation }) => {
             onPress={() => setIs_Driver(true)}
           />
         </View>
-
         <View style={styles.form}>
           <Input
             label="Nome"
