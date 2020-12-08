@@ -1,9 +1,12 @@
-import React from "react";
+import React, { Component, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Input } from "react-native-elements";
 import RNPickerSelect from "react-native-picker-select";
 import OfercerCarona from "../../../../component/OferecerCarona";
 import Carona from "../../../../component/Carona";
+import MultiSelect from "react-native-multiple-select";
+import { SafeAreaView } from "react-navigation";
+import { ScrollView } from "react-native-gesture-handler";
 
 const StartRideScreen = ({ navigation }) => {
   //Comportamento esperado:
@@ -14,61 +17,140 @@ const StartRideScreen = ({ navigation }) => {
   ////Com essa lista, quando um passageiro escolher o destino dele, se for um dos "Bairros" da lista do motorista com o mesmo local de partida
   ////A "Carona" aparece para o passageiro, na lista de "Caronas"
 
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [multiselect, setMultiselect] = useState(null);
+
+  const items = [
+    {
+      id: "92iijs7yta",
+      name: "Ondo",
+    },
+    {
+      id: "a0s0a8ssbsd",
+      name: "Ogun",
+    },
+    {
+      id: "16hbajsabsd",
+      name: "Calabar",
+    },
+    {
+      id: "nahs75a5sg",
+      name: "Lagos",
+    },
+    {
+      id: "667atsas",
+      name: "Maiduguri",
+    },
+    {
+      id: "hsyasajs",
+      name: "Anambra",
+    },
+    {
+      id: "djsjudksjd",
+      name: "Benue",
+    },
+    {
+      id: "sdhyaysdj",
+      name: "Kaduna",
+    },
+    {
+      id: "suudydjsjd",
+      name: "Abuja",
+    },
+  ];
+
   return (
-    <View style={styles.base}>
-      <View style={styles.formLine}>
-        <Text style={styles.label}>Local</Text>
-        <RNPickerSelect
-          onValueChange={(value) => console.log(value)}
-          items={[
-            { label: "Estácio Campus I", value: "1" },
-            { label: "Estácio Campus II", value: "2" },
-            { label: "Estácio Campus III", value: "3" },
-          ]}
-        />
-      </View>
-      <View style={styles.formLine}>
-        <Text style={styles.label}>Destino</Text>
-        <Input />
-      </View>
-      <View style={styles.btnStartLine}>
-        <TouchableOpacity
-          style={styles.btnStart}
-          onPress={() => navigation.navigate("Ride")}
-        >
-          <Text style={styles.btnStartText}>Começar corrida</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.list}>
-        <View style={styles.titleList}>
-          <Text style={styles.textList}>Passageiros</Text>
-          <Text style={styles.vagaCount}>1 Vaga(s)</Text>
+    <SafeAreaView>
+      <ScrollView horizontal={false}>
+        <View style={styles.base}>
+          <View style={styles.formLine}>
+            <Text style={styles.label}>Local</Text>
+            <RNPickerSelect
+              onValueChange={(value) => console.log(value)}
+              items={[
+                { label: "Estácio Campus I", value: "1" },
+                { label: "Estácio Campus II", value: "2" },
+                { label: "Estácio Campus III", value: "3" },
+              ]}
+            />
+          </View>
+          <View style={styles.formLine}>
+            <View>
+              <MultiSelect
+                hideTags
+                items={items}
+                uniqueKey="id"
+                ref={(component) => {
+                  setMultiselect(component);
+                }}
+                onSelectedItemsChange={setSelectedItems}
+                selectedItems={selectedItems}
+                selectText="Pick Items"
+                searchInputPlaceholderText="Search Items..."
+                onChangeInput={(text) => console.log(text)}
+                tagRemoveIconColor="#CCC"
+                tagBorderColor="#CCC"
+                tagTextColor="#CCC"
+                selectedItemTextColor="#CCC"
+                selectedItemIconColor="#CCC"
+                itemTextColor="#000"
+                displayKey="name"
+                searchInputStyle={{ color: "#CCC" }}
+                submitButtonColor="#CCC"
+                submitButtonText="Submit"
+              />
+              <View>
+                {multiselect ? multiselect.getSelectedItemsExt() : null}
+              </View>
+            </View>
+          </View>
+          <View style={styles.btnStartLine}>
+            <TouchableOpacity
+              style={styles.btnStart}
+              onPress={() => navigation.navigate("Ride")}
+            >
+              <Text style={styles.btnStartText}>Começar corrida</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.list}>
+            <View style={styles.titleList}>
+              <Text style={styles.textList}>Passageiros</Text>
+              <Text style={styles.vagaCount}>1 Vaga(s)</Text>
+            </View>
+            <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
+              <OfercerCarona />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
+              <OfercerCarona />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
+              <OfercerCarona />
+            </TouchableOpacity>
+          </View>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
-          <OfercerCarona />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
-          <OfercerCarona />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
-          <OfercerCarona />
-        </TouchableOpacity>
-      </View>
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   );
+};
+
+StartRideScreen.navigationOptions = () => {
+  return {
+    headerShown: false,
+  };
 };
 
 const styles = StyleSheet.create({
   base: {
     flex: 1,
     alignItems: "center",
-    paddingTop: 24,
     backgroundColor: "#fff",
+    flexDirection: "column",
   },
   formLine: {
     marginBottom: 24,
     padding: 12,
     width: "80%",
+    flex: 1,
   },
   label: {
     fontSize: 16,
@@ -79,6 +161,7 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 16,
     alignItems: "center",
+    flex: 2,
   },
   btnStart: {
     paddingTop: 12,
@@ -95,6 +178,7 @@ const styles = StyleSheet.create({
   },
   list: {
     width: "100%",
+    marginTop: 15,
   },
   titleList: {
     flexDirection: "row",

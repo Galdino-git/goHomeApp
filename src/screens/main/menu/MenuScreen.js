@@ -36,14 +36,14 @@ const MenuScreen = ({ navigation }) => {
         >
           <Text style={styles.btnText}>Buscar carona</Text>
         </TouchableOpacity>
-        {profile && profile.is_Driver ? (
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => navigation.navigate("StartRide")}
-          >
-            <Text style={styles.btnText}>Oferecer carona</Text>
-          </TouchableOpacity>
-        ) : null}
+        {/* {profile && profile.is_Driver ? ( */}
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("StartRide")}
+        >
+          <Text style={styles.btnText}>Oferecer carona</Text>
+        </TouchableOpacity>
+        {/* ) : null} */}
       </View>
     </View>
   );

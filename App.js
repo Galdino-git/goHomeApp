@@ -40,10 +40,13 @@ const appNavigator = createSwitchNavigator({
       }
     ),
     rideFlow: createSwitchNavigator({
-      chatFlow: createStackNavigator({
-        SearchRide: SearchRideScreen,
-        StartRide: StartRideScreen,
-      }),
+      chatFlow: createStackNavigator(
+        {
+          SearchRide: SearchRideScreen,
+          StartRide: StartRideScreen,
+        },
+        { navigationOptions: { headerShown: false } }
+      ),
       Ride: RideScreen,
       Evaluation: Evaluation,
     }),
