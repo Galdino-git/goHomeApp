@@ -14,6 +14,8 @@ const SearchRideScreen = ({ navigation }) => {
   //Ao clicar na Corrida, ir para o Chat com o motorista
   //Se já estiver em alguma corrida (for aceito no Chat), ir para tela de Track da Viagem(RideScreen)
 
+  
+
   return (
     <View style={styles.base}>
       <View style={styles.formLine}>
@@ -35,7 +37,7 @@ const SearchRideScreen = ({ navigation }) => {
         <View style={styles.titleList}>
           <Text style={styles.textList}>Caronas disponíveis</Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
+        <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
           <Carona/>
         </TouchableOpacity>
         
