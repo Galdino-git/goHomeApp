@@ -19,9 +19,7 @@ import { NavigationEvents } from "react-navigation";
 import * as ImagePicker from "expo-image-picker";
 
 const ProfileScreen = ({ navigation }) => {
-  const { state, getProfileByUserId, clearErrorMessage } = useContext(
-    LoginContext
-  );
+  const { state, updateData, clearErrorMessage } = useContext(LoginContext);
   const [showBirthdate, setShowBirthdate] = useState(false);
   const [questions, setQuestions] = useState([]);
 
@@ -107,16 +105,6 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
-    async function getProfile() {
-      const profile = await getProfileByUserId(state.token);
-      console.log(state.token);
-      console.log(profile);
-      // setName(profile.name);
-    }
-    getProfile();
-  }, []);
-
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || birthdate;
     setShowBirthdate(Platform.OS === "ios");
@@ -137,6 +125,36 @@ const ProfileScreen = ({ navigation }) => {
 
     return days + "/" + monthStr + "/" + year;
   };
+
+  useEffect(() => {
+    if (state.profile) {
+      const profile = state.profile;
+      setName(profile.name);
+      setCpf(profile.cpf);
+      onChange(null, new Date(profile.birthdate));
+      setTelephone(profile.telephone);
+      // setPhoto(profile.photo);
+      if (state.user) {
+        const user = state.user;
+        setEmail(user.email);
+        setPassword(user.password);
+        setSecret_Answer(user.secret_Answer);
+        set_Id_Secret_Question(user._id_Secret_Question);
+      }
+      setIs_Driver(profile.is_Driver);
+      if (profile.is_Driver) {
+        setCnh(profile.cnh);
+        if (state.car) {
+          const car = state.car;
+          setRenavam(car.renavam);
+          setModel(car.model);
+          setColor(car.color);
+          setLicense_plate(car.license_plate);
+        }
+      }
+    }
+  }, []);
+
   return (
     <SafeAreaView style={styles.base}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -156,7 +174,7 @@ const ProfileScreen = ({ navigation }) => {
                   style={{ marginBottom: 10 }}
                 />
                 <Text style={styles.label}>
-                  Clique na imagem para escolher a foto
+                  Clique na imagem para alterar a foto
                 </Text>
               </>
             )}
@@ -356,6 +374,7 @@ const ProfileScreen = ({ navigation }) => {
               itemKey={_id_Secret_Question}
               useNativeAndroidPickerStyle={true}
               style={{ inputAndroid: { color: "black" } }}
+              value={_id_Secret_Question}
               onValueChange={(value, index) => set_Id_Secret_Question(value)}
               placeholder={{ label: "Selecione uma pergunta", value: "" }}
               items={questions}
@@ -366,6 +385,41 @@ const ProfileScreen = ({ navigation }) => {
             value={secret_Answer}
             onChangeText={setSecret_Answer}
           />
+        </View>
+        <View style={styles.btnLine}>
+          <TouchableOpacity style={styles.btn}>
+            <Text
+              style={styles.btnText}
+              onPress={() => navigation.navigate("SignIn")}
+            >
+              Cancelar
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => {
+              updateData({
+                name,
+                birthdate,
+                cpf,
+                photo,
+                telephone,
+                is_Driver,
+                cnh,
+                renavam,
+                model,
+                color,
+                license_plate,
+                email,
+                password,
+                confirmPassword,
+                _id_Secret_Question,
+                secret_Answer,
+              });
+            }}
+          >
+            <Text style={styles.btnText}>Atualizar</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>

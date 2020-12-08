@@ -12,7 +12,7 @@ import { Context as LoginContext } from "../context/LoginContext";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 const CustomDrawer = (props) => {
-  const { signout } = useContext(LoginContext);
+  const { state, signout, getProfileByUserId } = useContext(LoginContext);
 
   return (
     <SafeAreaView style={styles.base}>

@@ -6,7 +6,13 @@ import { navigate } from "../_navigationRef";
 const LoginReducer = (state, action) => {
   switch (action.type) {
     case ("signup", "signin"):
-      return { ...state, token: action.payload };
+      return {
+        token: action.payload,
+        errorMessage: "",
+        profile: action.profile,
+        user: action.user,
+        car: action.car,
+      };
     case "error":
       return { ...state, errorMessage: action.payload };
     case "signout":
@@ -187,8 +193,9 @@ const signup = (dispatch) => async ({
 
     const _id_Profile = responseProfile.profile._id;
 
+    var responseCar = null;
     if (is_Driver) {
-      const responseCar = await goHomeApi
+      responseCar = await goHomeApi
         .post("/car/create", {
           renavam,
           model,
@@ -215,6 +222,9 @@ const signup = (dispatch) => async ({
     dispatch({
       type: "signup",
       payload: responseUser.token,
+      profile: responseProfile,
+      user: responseUser,
+      car: responseCar,
     });
     navigate("mainFlow");
   } catch (erro) {
@@ -247,6 +257,9 @@ const signin = (dispatch) => async ({ email, password }) => {
     dispatch({
       type: "signin",
       payload: response.token,
+      profile: response.profile,
+      user: response.user,
+      car: response.car,
     });
     navigate("mainFlow");
   } catch (erro) {
@@ -343,6 +356,218 @@ const getProfileByUserId = (dispatch) => async ({ token }) => {
   }
 };
 
+const updateData = (dispatch) => async ({
+  name,
+  birthdate,
+  cpf,
+  photo,
+  telephone,
+  is_Driver,
+  cnh,
+  renavam,
+  model,
+  color,
+  license_plate,
+  email,
+  password,
+  confirmPassword,
+  _id_Secret_Question,
+  secret_Answer,
+}) => {
+  //#region Validações
+  if (!name) {
+    dispatch({
+      type: "error",
+      payload: "Nome precisa ser informado!",
+    });
+    return;
+  }
+
+  const isTodayOrAfter = (birthdate) => {
+    const today = new Date();
+    var todayYear = today.getFullYear();
+    var birthdateYear = birthdate.getFullYear();
+
+    if (todayYear == birthdateYear) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  if (isTodayOrAfter(birthdate)) {
+    dispatch({
+      type: "error",
+      payload: "Data de aniversário deve ser diferente de hoje!",
+    });
+    return;
+  }
+
+  if (!cpf) {
+    dispatch({
+      type: "error",
+      payload: "CPF precisa ser informado!",
+    });
+    return;
+  }
+
+  if (!photo) {
+    dispatch({
+      type: "error",
+      payload: "Uma foto precisa ser fornecida!",
+    });
+    return;
+  }
+
+  if (!telephone) {
+    dispatch({
+      type: "error",
+      payload: "Telefone precisa ser informado!",
+    });
+    return;
+  }
+
+  if (!cnh && is_Driver) {
+    dispatch({
+      type: "error",
+      payload: "CNH precisa ser informada!",
+    });
+    return;
+  }
+
+  if (!renavam && is_Driver) {
+    dispatch({
+      type: "error",
+      payload: "Renavam precisa ser informado!",
+    });
+    return;
+  }
+
+  if (!model && is_Driver) {
+    dispatch({
+      type: "error",
+      payload: "Modelo do veículo precisa ser informado!",
+    });
+    return;
+  }
+
+  if (!color && is_Driver) {
+    dispatch({
+      type: "error",
+      payload: "Cor do veículo precisa ser informado!",
+    });
+    return;
+  }
+
+  if (!license_plate && is_Driver) {
+    dispatch({
+      type: "error",
+      payload: "Placa do veículo precisa ser informada!",
+    });
+    return;
+  }
+
+  if (!email) {
+    dispatch({
+      type: "error",
+      payload: "Email precisa ser informado!",
+    });
+    return;
+  }
+
+  if (!password) {
+    dispatch({
+      type: "error",
+      payload: "Senha precisa ser informada!",
+    });
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    dispatch({
+      type: "error",
+      payload: "A confirmação da senha está incorreta!",
+    });
+    return;
+  }
+
+  if (!_id_Secret_Question) {
+    dispatch({
+      type: "error",
+      payload: "Pergunta para recuperação de senha precisa ser informada!",
+    });
+    return;
+  }
+
+  if (!secret_Answer) {
+    dispatch({
+      type: "error",
+      payload: "Resposta secreta precisa ser informada!",
+    });
+    return;
+  }
+
+  //#endregion
+
+  try {
+    const responseProfile = await goHomeApi
+      .post("/profile/update", {
+        name,
+        birthdate,
+        cpf,
+        photo,
+        telephone,
+        is_Driver,
+        cnh,
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+
+    const _id_Profile = responseProfile.profile._id;
+
+    var responseCar = null;
+    if (is_Driver) {
+      responseCar = await goHomeApi
+        .post("/car/update", {
+          renavam,
+          model,
+          color,
+          license_plate,
+          _id_Profile,
+        })
+        .then((response) => response.data)
+        .catch((error) => console.log(error.message));
+    }
+
+    const responseUser = await goHomeApi
+      .post("/user/update", {
+        email,
+        password,
+        _id_Secret_Question,
+        secret_Answer,
+        _id_Profile,
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+
+    await AsyncStorage.setItem("token", responseUser.token);
+    dispatch({
+      type: "signup",
+      payload: responseUser.token,
+      profile: responseProfile,
+      user: responseUser,
+      car: responseCar,
+    });
+    navigate("mainFlow");
+  } catch (erro) {
+    console.log(erro.message);
+    dispatch({
+      type: "error",
+      payload: "Algo de errado ocorreu durante o processo de cadastro.",
+    });
+  }
+};
+
 export const { Provider, Context } = createDataContext(
   LoginReducer,
   {
@@ -353,6 +578,7 @@ export const { Provider, Context } = createDataContext(
     clearErrorMessage,
     passwordRecovery,
     getProfileByUserId,
+    updateData,
   },
-  { token: null, errorMessage: "" }
+  { token: null, errorMessage: "", profile: null, user: null, car: null }
 );

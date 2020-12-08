@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-
-import Map from "../../../component/Map";
+import { Entypo } from "@expo/vector-icons";
+import { Context as LoginContext } from "../../../context/LoginContext";
 
 const MenuScreen = ({ navigation }) => {
-  //Comportamento esperado:
-  //Tela "principal" para Iniciar uma Corrida(se Motorista) e/ou Buscar uma Corrida(motorista/passageiro)
-  //Side menu com foto, nome, avaliação botao para acessar Historico, botao para acessar Perfil e botão para deslogar
+  const { state } = useContext(LoginContext);
+  //Side com nome foto avaliação
 
-  const isMotorista = true;
+  const profile = state.profile;
 
   return (
     <View style={styles.base}>
-      <Map />
+      <Text style={styles.title}>
+        Go
+        <Entypo name="home" size={80} color="green" />
+      </Text>
       <View style={styles.btnLine}>
         <TouchableOpacity
           style={styles.btn}
@@ -20,26 +22,33 @@ const MenuScreen = ({ navigation }) => {
         >
           <Text style={styles.btnText}>Buscar carona</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.btn}
-          onPress={() => navigation.navigate("StartRide")}
-        >
-          <Text style={styles.btnText}>Oferecer carona</Text>
-        </TouchableOpacity>
+        {profile && profile.is_Driver ? (
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => navigation.navigate("StartRide")}
+          >
+            <Text style={styles.btnText}>Oferecer carona</Text>
+          </TouchableOpacity>
+        ) : null}
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 80,
+    alignSelf: "center",
+    marginBottom: 80,
+  },
   base: {
     flex: 1,
     paddingTop: 24,
     alignItems: "center",
     backgroundColor: "#fff",
+    justifyContent: "center",
   },
   btnLine: {
-    paddingTop: 48,
     alignItems: "center",
   },
   btn: {

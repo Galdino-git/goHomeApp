@@ -360,6 +360,14 @@ const SignUpScreen = ({ navigation }) => {
           <Text style={styles.errorMessage}>{state.errorMessage}</Text>
         ) : null}
         <View style={styles.btnLine}>
+          <TouchableOpacity style={styles.btn}>
+            <Text
+              style={styles.btnText}
+              onPress={() => navigation.navigate("SignIn")}
+            >
+              Cancelar
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.btn}
             onPress={() => {
@@ -384,14 +392,6 @@ const SignUpScreen = ({ navigation }) => {
             }}
           >
             <Text style={styles.btnText}>Cadastrar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn}>
-            <Text
-              style={styles.btnText}
-              onPress={() => navigation.navigate("SignIn")}
-            >
-              Cancelar
-            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
